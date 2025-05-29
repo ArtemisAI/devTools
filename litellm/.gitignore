@@ -1,0 +1,30 @@
+#.gitignore for LiteLLM
+# Ignore environment variable files
+.env
+.env.local
+.env.*.local
+
+# Ignore configuration files containing secrets
+config.yaml
+
+# Docker override files
+docker-compose.override.yml
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+build/
+dist/
+*.egg-info/
+
+# Node modules
+node_modules/
+
+# IDE settings
+.vscode/
+.idea/
+
+# Logs
+*.log

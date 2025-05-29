@@ -1,18 +1,14 @@
 #version: "3.11"
 services:
   litellm:
-    build:
-      context: .
-      args:
-        target: runtime
     image: ghcr.io/berriai/litellm:main-stable
     restart: unless-stopped
     #########################################
-    ## Uncomment these lines to start proxy with a config.yaml file ##
-    # volumes:
-    #  - ./config.yaml:/app/config.yaml # <<- this is missing in the docker-compose file currently (referring to litellm's config.yaml, not prometheus.yml)
-    # command:
-    #  - "--config=/app/config.yaml"
+    ## Mount a config.yaml to set the master key (see config.yaml file) ##
+    volumes:
+      - ./config.yaml:/app/config.yaml
+    command:
+      - "--config=/app/config.yaml"
     ##############################################
     ports:
       - "4000:4000" # Map the container port to the host, change the host port if necessary
@@ -22,7 +18,7 @@ services:
     depends_on:
       - db  # Indicates that this service depends on the 'db' service, ensuring 'db' starts first
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:4000/health/liveliness || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:4000/health/liveness || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
